@@ -1,4 +1,18 @@
 Rails.application.routes.draw do
+
+  get "/" => "players#index", :as => "root"
+
+  resources :teams
+
+  resources :players do
+    collection do
+      get 'players_by_bowling_type/:bowling_type' => 'players#players_by_bowling_type', as: :bowling_type
+      get 'players_by_bowling_hand/:bowling_hand' => 'players#players_by_bowling_hand', as: :bowling_hand
+      get 'players_by_batting_hand/:batting_hand' => 'players#players_by_batting_hand', as: :batting_hand
+      get 'keepers/:is_keeper' => 'players#keepers', as: :keepers
+    end
+
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
