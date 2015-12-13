@@ -1,18 +1,23 @@
 .row.grey-bg.p-h-40.p-t-20
-  - @players.each do |player|
+  - @players_by_batting_hand.each do |player|
     .col-md-3.text-center
       %a{href: player_path(player.id)}
         .player-div
-          .player-name.min-height-50.player-fields
+          .player-name.min-height-60.player-fields
             = "Name: #{player.first_name}" + " " + "#{player.last_name}"
-          .player-teams.min-height-50.player-fields
+          .player-teams.min-height-60.player-fields
             - player.teams.each do |team|
               - teams_string =  " #{team.name}" + " |"
               = "Teams: #{teams_string.chop}"
-          .player-bowling-style.min-height-50.player-fields
+          .player-bowling-style.min-height-60.player-fields
             = "Bowling Style: #{player.bowling_type}"
-          .player-bowling-style.min-height-50.player-fields
+          .player-bowling-style.min-height-60.player-fields
             = "Batting Hand: #{player.batting_hand}"
-          .player-bowling-style.min-height-50.player-field-last
+          .player-bowling-style.min-height-60.player-fields
             = "Bowling Hand: #{player.bowling_hand}"
+          .player-bowling-style.min-height-60.player-field-last
+            - if player.keeper
+              = "Weeket Keeper"
+            - else
+              = "Not a Weeket Keeper"
         %br

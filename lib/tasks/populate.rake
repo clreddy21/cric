@@ -1,47 +1,52 @@
 namespace :create_players do
 
-    task build: :environment do
-      puts "Adding players to the database..................!"
-      players_file = File.open(Rails.root.join('lib', 'assets', 'players.txt').to_s)
+  task build: :environment do
+    puts "Adding players to the database..................!"
+    players_file = File.open(Rails.root.join('lib', 'assets', 'players.txt').to_s)
 
-      possible_bowling_types = ['NA', '', 'Fast', 'MediumFast', 'Medium', 'Slow', 'Chinaman', 'Orthodox', 'LegSpin', 'OffSpin']
-      possible_batting_hands = ["RightHanded", "LeftHanded"]
-      possible_bowling_hands = ["RightHanded", "LeftHanded"]
+    possible_bowling_types = ['NA', '', 'Fast', 'MediumFast', 'Medium', 'Slow', 'Chinaman', 'Orthodox', 'LegSpin', 'OffSpin']
+    possible_batting_hands = ["RightHanded", "LeftHanded"]
+    possible_bowling_hands = ["RightHanded", "LeftHanded"]
 
 
-      players_file.each do |line|
-        attributes = line.split(" ")
+    players_file.each do |line|
+      attributes = line.split(":")
 
-        first_name_key = attributes[0].split(":")[0]
-        first_name_value = attributes[0].split(":")[1]
+      if attributes.length == 8
 
-        last_name_key = attributes[1].split(":")[0]
-        last_name_value = attributes[1].split(":")[1]
+        first_name_key = attributes[0].rpartition(' ').last.strip
+        first_name_value = attributes[1].rpartition(' ').first.strip
 
-        bowling_type_key = attributes[2].split(":")[0]
-        bowling_type_value = attributes[2].split(":")[1]
+        last_name_key = attributes[1].rpartition(' ').last.strip
+        last_name_value = attributes[2].rpartition(' ').first.strip
 
-        batting_hand_key = attributes[3].split(":")[0]
-        batting_hand_value = attributes[3].split(":")[1]
+        bowling_type_key = attributes[2].rpartition(' ').last.strip
+        bowling_type_value = attributes[3].rpartition(' ').first.strip
 
-        bowling_hand_key = attributes[4].split(":")[0]
-        bowling_hand_value = attributes[4].split(":")[1]
+        batting_hand_key = attributes[3].rpartition(' ').last.strip
+        batting_hand_value = attributes[4].rpartition(' ').first.strip
 
-        keeper_key = attributes[5].split(":")[0]
-        keeper_value = attributes[5].split(":")[1]
+        bowling_hand_key = attributes[4].rpartition(' ').last.strip
+        bowling_hand_value = attributes[5].rpartition(' ').first.strip
 
-        teams_key = attributes[6].split(":")[0]
-        teams_value = line.split(":").last.delete!("\n")
+        keeper_key = attributes[5].rpartition(' ').last.strip
+        keeper_value = attributes[6].rpartition(' ').first.strip
+
+        teams_key = attributes[6].rpartition(' ').last.strip
+        teams_value = attributes[7].delete!("\n")
+
 
         # puts "collected values"
         # puts "checking keys"
-        if (first_name_key == "FIRST_NAME") && (last_name_key == "LAST_NAME") && (bowling_type_key == "BOWLING_TYPE") &&
-            (batting_hand_key == "BATTING_HAND") && (bowling_hand_key == "BOWLING_HAND") && (keeper_key == "KEEPER") && (teams_key == "TEAMS")
-          # puts "checked keys"
 
+        if (first_name_key == "FIRST_NAME") && (last_name_key == "LAST_NAME") && (bowling_type_key == "BOWLING_TYPE") &&
+          (batting_hand_key == "BATTING_HAND") && (bowling_hand_key == "BOWLING_HAND") && (keeper_key == "KEEPER") && (teams_key == "TEAMS")
+
+          # puts "checked keys"
           # puts "checking values"
-          if (possible_bowling_types.include?(bowling_type_value)) && (possible_batting_hands.include?(batting_hand_value)) &&
-              (possible_bowling_hands.include?(bowling_hand_value))
+
+          if (!first_name_value.blank?) && (!last_name_value.blank?) && (possible_bowling_types.include?(bowling_type_value)) &&
+              (possible_batting_hands.include?(batting_hand_value)) && (possible_bowling_hands.include?(bowling_hand_value)) && (!teams_value.blank?)
             # puts "checked values"
 
             (keeper_value == "true") ? (keeper = true) : (keeper = false)
@@ -54,6 +59,7 @@ namespace :create_players do
             players_teams = teams_value.split(',')
 
             team_names = Team.all.collect(&:name)
+
             players_teams.each do |player_team|
 
               if team_names.include?(player_team)
@@ -62,14 +68,12 @@ namespace :create_players do
               else
                 player.teams.create(name: player_team)
               end
-            end
+             end
           end
-
         end
-
-
+      end
     end
   end
-
 end
+
 

@@ -6,10 +6,10 @@ Rails.application.routes.draw do
 
   resources :players do
     collection do
+      get 'keepers/:is_keeper' => 'players#keepers', as: :keepers
       get 'players_by_bowling_type/:bowling_type' => 'players#players_by_bowling_type', as: :bowling_type
       get 'players_by_bowling_hand/:bowling_hand' => 'players#players_by_bowling_hand', as: :bowling_hand
       get 'players_by_batting_hand/:batting_hand' => 'players#players_by_batting_hand', as: :batting_hand
-      get 'keepers/:is_keeper' => 'players#keepers', as: :keepers
     end
 
   end

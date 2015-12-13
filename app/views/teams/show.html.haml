@@ -1,0 +1,43 @@
+#team-show.p-h-40.p-t-20
+  .row.text-center
+    .row
+      %h2
+        = @team.name
+    .row
+      %h3
+        = "List of players"
+
+    .team-table
+      %table.table.table-striped.p-t-20
+        %thead
+          %th.text-center S.No
+          %th.text-center Name
+          %th.text-center Bowling Type
+          %th.text-center Bowling Hand
+          %th.text-center Batting Hand
+          %th.text-center Is Keeper
+          %th.text-center Details
+          %tbody
+            - i = 1
+            - @team.players.each do |player|
+              %tr
+                %td
+                  = i
+                %td
+                  = player.first_name + " " + player.last_name
+                %td
+                  = player.bowling_type
+                %td
+                  = player.bowling_hand
+                %td
+                  = player.batting_hand
+                %td
+                  - if player.keeper
+                    = "Keeper"
+                  - else
+                    = "Not a Keeper"
+                %td
+                  %a.btn.btn-default.btn-info{:href => player_path(player.id)}
+                    = 'Details'
+              - i = i+1
+

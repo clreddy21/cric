@@ -1,0 +1,11 @@
+.row.grey-bg.p-h-40.p-t-20
+  - @teams.each do |team|
+    .col-md-4.text-center
+      %a{href: team_path(team.id)}
+        .team-div
+          .team-name.min-height-60.team-fields.font-24
+            = team.name.truncate(32)
+          .team-players.min-height-60
+            = "Number of players" + " " + "#{team.players.count}"
+            %br
+        %br

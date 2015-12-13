@@ -5,32 +5,33 @@
       .row
         %h2.text-center
           = "#{@player.first_name}" + " " + "#{@player.last_name}"
-        .text-center
-          = "Bowling Style: "
-          - bowling_type = @player.bowling_type
-          %a{href: bowling_type_players_path(bowling_type)}
-            = bowling_type
-      .row
-        .text-center
-          = "Batting Hand: "
-          - batting_hand = @player.batting_hand
-          %a{href: batting_hand_players_path(batting_hand)}
-            = batting_hand
-      .row
-        .text-center
-          = "Bowling Hand: "
-          - bowling_hand = @player.bowling_hand
-          %a{href: bowling_hand_players_path(bowling_hand)}
-            = bowling_hand
-      - if @player.keeper
-        .row
-          .text-center
-            %a{href: keepers_players_path(bowling_hand)}
-              = "Keeper Batsmen"
-      .row
-        .text-center
-          = "Teams played for: "
-          - @player.teams.each do |team|
-            %a{href: team_path(team.id)}
-              = " | " + "#{team.name}" + " "
 
+
+  .row.p-t-20
+    .team-table
+      %table.table.table-striped.p-t-20
+        %thead
+          %th Name
+          %th Bowling Type
+          %th Bowling Hand
+          %th Batting Hand
+          %th Is Keeper
+          %tbody
+            %td
+              = @player.first_name + " " + @player.last_name
+            %td
+              %a{href: bowling_type_players_path(@player.bowling_type)}
+                = @player.bowling_type
+            %td
+              %a{href: bowling_hand_players_path(@player.bowling_hand)}
+                = @player.bowling_hand
+            %td
+              %a{href: batting_hand_players_path(@player.batting_hand)}
+                = @player.batting_hand
+            %td
+              - if @player.keeper
+                %a{href: keepers_players_path('keeper')}
+                  = "Keeper"
+              - else
+                %a{href: keepers_players_path('not_keeper')}
+                  = "Not a Keeper"
