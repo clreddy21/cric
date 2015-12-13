@@ -15,6 +15,7 @@
           %th Bowling Type
           %th Bowling Hand
           %th Batting Hand
+          %th Teams
           %th Is Keeper
           %tbody
             %td
@@ -28,6 +29,11 @@
             %td
               %a{href: batting_hand_players_path(@player.batting_hand)}
                 = @player.batting_hand
+            %td
+              - @player.teams.each do |team|
+                %a{href: team_path(team.id)}
+                  = team.name
+                = ","
             %td
               - if @player.keeper
                 %a{href: keepers_players_path('keeper')}
